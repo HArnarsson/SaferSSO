@@ -1,0 +1,24 @@
+Team Roles
+    Team Name - SaferSSO
+    Client Liaison - Carter Strate
+    Advisor POC - Avery Overberg
+    Team Lead -  Hilmir Arnarsson
+
+Team Procedures
+    Working Hours -
+        Daily Stand up 9:30 am Mon-Fri discord 5 min.
+        Advisory meeting 9:30 am Tue. in Beck Venture Center
+        Client Meeting 9:30 am Thur. in Prof. Liu’s office
+        Class times and the hour after class time (8-10:30) for group work time
+    Pairing - We will not use pair programming
+    Scrum - Github issues/projects
+    VCS - Github, using pull requests with certain rules
+        Review required for every pull request
+        The Main branch is not editable
+
+Team Norms
+    Communication -
+        Discord-calls for daily meetings, more formal discussions. Discord will also be used to share resources.
+        Imessage-more casual messages and impromptu chats
+    Decision Making - Open discussion/debate followed by a vote, we will include the client and advisor when applicable.
+    Feedback - Using Githubs conversation and pull request system, eg. someone else has to approve your work for it to be published.
