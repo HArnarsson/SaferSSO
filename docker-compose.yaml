@@ -23,6 +23,7 @@ services:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
     depends_on:
       - db
+      - migrate
 
   db:
     image: postgres:14
@@ -31,6 +32,18 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       <<: *common-variables
+
+  migrate:
+    build:
+      context: process/sp
+      dockerfile: Dockerfile
+    restart: no
+    command: python manage.py migrate
+    environment: *common-variables
+    volumes:
+      - ./process/sp/app:/code
+    depends_on:
+      - db
 
 volumes:
   postgres_data:
