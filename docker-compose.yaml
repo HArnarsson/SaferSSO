@@ -3,48 +3,113 @@ x-common-variables: &common-variables
   POSTGRES_DB: ${POSTGRES_DB}
   POSTGRES_USER: ${POSTGRES_USER}
   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  POSTGRES_HOST: ${POSTGRES_HOST}
-  POSTGRES_PORT: ${POSTGRES_PORT}
+
 
 services:
-  web:
-    build: 
+  service_provider:
+    profiles: ["sp"]
+    build:
       context: process/sp
       dockerfile: Dockerfile
-    container_name: "web"
+    container_name: "service_provider"
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     volumes:
       - ./process/sp/app:/code
-    env_file:
-      .env  
-    environment:
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-    depends_on:
-      - db
-      - migrate
-
-  db:
-    image: postgres:14
-    container_name: postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
     environment:
       <<: *common-variables
+      POSTGRES_HOST: ${SP_POSTGRES_HOST}
+      POSTGRES_PORT: ${SP_POSTGRES_PORT}
+      DJANGO_SECRET_KEY: ${SP_DJANGO_SECRET_KEY}
+    depends_on:
+      - sp_db
+      - sp_migrate
 
-  migrate:
+  sp_db:
+    profiles: ["sp"]
+    image: postgres:14
+    container_name: sp_postgres
+    volumes:
+      - sp_data:/var/lib/postgresql/data/
+    environment:
+      <<: *common-variables
+      POSTGRES_HOST: ${SP_POSTGRES_HOST}
+      POSTGRES_PORT: ${SP_POSTGRES_PORT}
+
+  sp_migrate:
+    profiles: ["sp"]
     build:
       context: process/sp
       dockerfile: Dockerfile
+    container_name: sp_migrate
     restart: no
     command: python manage.py migrate
-    environment: *common-variables
+    environment: 
+      <<: *common-variables
+      POSTGRES_HOST: ${SP_POSTGRES_HOST}
+      POSTGRES_PORT: ${SP_POSTGRES_PORT}
     volumes:
       - ./process/sp/app:/code
     depends_on:
-      - db
+      - sp_db
+
+  identity_provider:
+    profiles: ["idp"]
+    build: 
+      context: process/idp
+      dockerfile: Dockerfile
+    container_name: "identity_provider"
+    command: python manage.py runserver 0.0.0.0:8001
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./process/idp/app:/code
+    environment:
+      <<: *common-variables
+      POSTGRES_HOST: ${IDP_POSTGRES_HOST}
+      POSTGRES_PORT: ${IDP_POSTGRES_PORT}
+      DJANGO_SECRET_KEY: ${IDP_DJANGO_SECRET_KEY}
+    depends_on:
+      - idp_db
+      - idp_migrate
+
+  idp_db:
+    profiles: ["idp"]
+    image: postgres:14
+    container_name: idp_postgres
+    volumes:
+      - idp_data:/var/lib/postgresql/data/
+    environment:
+      <<: *common-variables
+      POSTGRES_HOST: ${IDP_POSTGRES_HOST}
+      POSTGRES_PORT: ${IDP_POSTGRES_PORT}
+    expose: 
+      - "5433"
+    ports:
+      - "5433:5433"
+    command: -p 5433
+
+  idp_migrate:
+    profiles: ["idp"]
+    build:
+      context: process/idp
+      dockerfile: Dockerfile
+    container_name: idp_migrate
+    restart: no
+    command: python manage.py migrate
+    environment: 
+      <<: *common-variables
+      POSTGRES_HOST: ${IDP_POSTGRES_HOST}
+      POSTGRES_PORT: ${IDP_POSTGRES_PORT}
+    volumes:
+      - ./process/idp/app:/code
+    depends_on:
+      - idp_db
+
 
 volumes:
-  postgres_data:
+  sp_data:
+    driver: local
+  idp_data:
     driver: local
