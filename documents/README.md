@@ -16,3 +16,5 @@ docker compose -f docker-compose.yaml --profile "*" build
 ```shell
 docker compose -f docker-compose.yaml --profile "*" build
 ```
+
+The service provider will be running on localhost:8000, and the identity provider will be running on localhost:8001.
