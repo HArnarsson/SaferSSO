@@ -1,6 +1,6 @@
 const App = () => (
   <div>
-    <h1>SP: Hello World</h1>
+    <h1>Idp: Hello World</h1>
   </div>
 );
 
