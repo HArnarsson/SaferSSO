@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,11 +78,11 @@ WSGI_APPLICATION = 'identity_provider.wsgi.application'
 
 
 #Oauth2 stuff
-
+OIDC_RSA_PRIVATE_KEY = env.str('OIDC_RSA_PRIVATE_KEY', multiline=True)
 OAUTH2_PROVIDER = {
     "OAUTH2_VALIDATOR_CLASS": "identity_provider.oauth_validators.CustomOAuth2Validator",
     "OIDC_ENABLED": True,
-    "OIDC_RSA_PRIVATE_KEY": os.environ.get("OIDC_RSA_PRIVATE_KEY"),
+    "OIDC_RSA_PRIVATE_KEY": OIDC_RSA_PRIVATE_KEY,
     "SCOPES": {
         "openid": "OpenID Connect scope",
         "profile": "User profile information",

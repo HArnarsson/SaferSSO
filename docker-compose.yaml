@@ -70,6 +70,7 @@ services:
       POSTGRES_HOST: ${IDP_POSTGRES_HOST}
       POSTGRES_PORT: ${IDP_POSTGRES_PORT}
       DJANGO_SECRET_KEY: ${IDP_DJANGO_SECRET_KEY}
+      OIDC_RSA_PRIVATE_KEY: ${OIDC_RSA_PRIVATE_KEY}
     depends_on:
       - idp_db
       - idp_migrate
