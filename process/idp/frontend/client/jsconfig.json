@@ -1,6 +1,0 @@
-{
-    "compilerOptipons": {
-        "baseUrl": "src"
-    },
-    "include": ["src"]
-}

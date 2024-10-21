@@ -1,9 +1,11 @@
+import Layout from '../components/Layout'
+
 const LoginPage = () => {
     return (
-        <div>
+        <Layout title='SaferSSO | Login' content='Login page'>
             <h1>Login</h1>
-        </div>
-    )
-}
+        </Layout>
+    );
+};
 
 export default LoginPage;

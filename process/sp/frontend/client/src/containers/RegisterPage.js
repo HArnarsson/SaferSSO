@@ -1,9 +1,11 @@
+import Layout from '../components/Layout'
+
 const RegisterPage = () => {
     return (
-        <div>
+        <Layout title='SaferSSO | Register' content='Register page'>
             <h1>Register</h1>
-        </div>
-    )
-}
+        </Layout>
+    );
+};
 
 export default RegisterPage;

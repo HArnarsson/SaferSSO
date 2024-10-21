@@ -1,9 +1,11 @@
+import Layout from '../components/Layout'
+
 const HomePage = () => {
     return (
-        <div>
+        <Layout title='SaferSSO | Home' content='Home page'>
             <h1>Home</h1>
-        </div>
-    )
-}
+        </Layout>
+    );
+};
 
 export default HomePage;
