@@ -8,10 +8,10 @@ import RegisterPage from './containers/RegisterPage';
 const App = () => (
   <Router>
     <Routes>
-      <Route path="/" elements={<HomePage />} />
-      <Route path="/dashboard" elements={<DashboardPage />} />
-      <Route path="/login" elements={<LoginPage />} />
-      <Route path="/register" elements={<RegisterPage />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
     </Routes>
   </Router>
 );
