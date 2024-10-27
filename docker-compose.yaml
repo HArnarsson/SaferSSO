@@ -26,6 +26,42 @@ services:
       - sp_db
       - sp_migrate
 
+#Express server service
+  sp_express:
+    profiles: ["sp"]  # Same profile as service_provider to run by default
+    build:
+      context: process/sp
+      dockerfile: frontend/Dockerfile
+    container_name: "sp_express"
+    command: sh -c "cd frontend && npm start"  # Run the Express server
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./process/sp/frontend:/code/frontend
+     # - ./process/sp/frontend/client/build:/code/frontend/client/build
+    depends_on:
+      - service_provider
+
+  #React development server
+  sp_react_dev:
+    profiles: ["sp"]  # Same profile as others to run by default
+    build:
+      context: process/sp
+      dockerfile: frontend/Dockerfile
+    container_name: "sp_react_dev"
+    command: sh -c "cd frontend/client && npm start"  # Run the React dev server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./process/sp/frontend:/code/frontend
+      # - ./process/sp/frontend/client:/code/frontend/client
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - sp_express
+
+
+
   sp_db:
     profiles: ["sp"]
     image: postgres:14
