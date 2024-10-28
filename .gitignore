@@ -76,3 +76,6 @@ venv.bak/
 .DS_STORE
 
 *.key
+
+# react/express server stuff#
+node_modules 

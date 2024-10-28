@@ -18,3 +18,4 @@ docker compose -f docker-compose.yaml --profile "*" build
 ```
 
 The service provider will be running on localhost:8000, and the identity provider will be running on localhost:8001.
+The express server will be running on localhost:80002, the react dev server will be running on localhost:3000
