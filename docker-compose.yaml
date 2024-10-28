@@ -38,7 +38,6 @@ services:
       - "8002:8002"
     volumes:
       - ./process/sp/frontend:/code/frontend
-     # - ./process/sp/frontend/client/build:/code/frontend/client/build
     depends_on:
       - service_provider
 
@@ -54,7 +53,6 @@ services:
       - "3000:3000"
     volumes:
       - ./process/sp/frontend:/code/frontend
-      # - ./process/sp/frontend/client:/code/frontend/client
     environment:
       - NODE_ENV=development
     depends_on:
