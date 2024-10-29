@@ -33,11 +33,16 @@ services:
       context: process/sp
       dockerfile: frontend/Dockerfile
     container_name: "sp_express"
-    command: sh -c "cd frontend && npm start"  # Run the Express server
+    # command: cd frontend  # Run the Express server
+    working_dir: /code/frontend
+    command: npm start
     ports:
       - "8002:8002"
-    volumes:
-      - ./process/sp/frontend:/code/frontend
+    # volumes:
+    #   - ./process/sp/frontend:/code/frontend 
+    # would need to be more specific about what to include in volumes if we want the flexibility that they provide, 
+    # if we want client to update then we need to specify that
+    #
     depends_on:
       - service_provider
 
@@ -48,11 +53,15 @@ services:
       context: process/sp
       dockerfile: frontend/Dockerfile
     container_name: "sp_react_dev"
-    command: sh -c "cd frontend/client && npm start"  # Run the React dev server
+    working_dir: /code/frontend/client
+    command: npm start
     ports:
       - "3000:3000"
-    volumes:
-      - ./process/sp/frontend:/code/frontend
+    # would need to be more specific about what to include in volumes if we want the flexibility that they provide, 
+    # if we want client to update then we need to specify that
+    #
+    # volumes:
+      # - ./process/sp/frontend:/code/frontend 
     environment:
       - NODE_ENV=development
     depends_on:
@@ -104,7 +113,6 @@ services:
       POSTGRES_HOST: ${IDP_POSTGRES_HOST}
       POSTGRES_PORT: ${IDP_POSTGRES_PORT}
       DJANGO_SECRET_KEY: ${IDP_DJANGO_SECRET_KEY}
-      OIDC_RSA_PRIVATE_KEY: ${OIDC_RSA_PRIVATE_KEY}
     depends_on:
       - idp_db
       - idp_migrate
