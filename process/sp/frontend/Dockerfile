@@ -5,20 +5,18 @@ FROM node:20-slim
 WORKDIR /code
 
 # Install Express server dependencies
-COPY frontend/package*.json ./frontend/
+COPY frontend/ /code/frontend/ 
 WORKDIR /code/frontend
 RUN npm install
 
 # Install React client dependencies
-COPY frontend/client/package*.json ./frontend/client/
+COPY frontend/client/ ./frontend/client/
 WORKDIR /code/frontend/client
 RUN npm install
 
-# Copy all frontend code before building
-# This is crucial - we need the source files to build
-COPY frontend/ /code/frontend/
 
 # Build React client
+COPY frontend/ /code/frontend/
 WORKDIR /code/frontend/client
 RUN npm run build
 
