@@ -7,7 +7,7 @@ x-common-variables: &common-variables
 
 services:
   service_provider:
-    profiles: ["sp"]
+    profiles: ["sp", "backend"]
     build:
       context: process/sp
       dockerfile: Dockerfile
@@ -70,7 +70,7 @@ services:
 
 
   sp_db:
-    profiles: ["sp"]
+    profiles: ["sp", "backend"]
     image: postgres:14
     container_name: sp_postgres
     volumes:
@@ -81,7 +81,7 @@ services:
       POSTGRES_PORT: ${SP_POSTGRES_PORT}
 
   sp_migrate:
-    profiles: ["sp"]
+    profiles: ["sp", "backend"]
     build:
       context: process/sp
       dockerfile: Dockerfile
@@ -98,7 +98,7 @@ services:
       - sp_db
 
   identity_provider:
-    profiles: ["idp"]
+    profiles: ["idp", "backend"]
     build: 
       context: process/idp
       dockerfile: Dockerfile
@@ -119,7 +119,7 @@ services:
       - idp_migrate
 
   idp_db:
-    profiles: ["idp"]
+    profiles: ["idp", "backend"]
     image: postgres:14
     container_name: idp_postgres
     volumes:
@@ -135,7 +135,7 @@ services:
     command: -p 5433
 
   idp_migrate:
-    profiles: ["idp"]
+    profiles: ["idp", "backend"]
     build:
       context: process/idp
       dockerfile: Dockerfile
