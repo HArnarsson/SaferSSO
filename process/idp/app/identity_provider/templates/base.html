@@ -7,6 +7,26 @@
   </head>
   <body>
     <h1>Our Identity Provider</h1>
+
+    <!-- Navigation bar or header -->
+    {% if user.is_authenticated %}
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/accounts/profile/">Profile</a></li>
+        <!-- other links -->
+      </ul>
+    </nav>
+    {% endif %}
+
+    <!-- Logout Form (visible when the user is logged in) -->
+    {% if user.is_authenticated %}
+    <form action="{% url 'logout' %}" method="POST">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+    {% endif %}
+
     <main>{% block content %}{% endblock content %}</main>
   </body>
 </html>

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Profile Information</h2>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Username:</strong> {{ user.username }}</p>
+  <p><strong>First Name:</strong> {{ user.first_name }}</p>
+  <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+  
+  <!-- Add other user information fields if needed -->
+
+  <h3>Update Your Information</h3>
+    <!-- Redirect Button to the Update Profile page -->
+    <a href="{% url 'profile_update' %}">
+    <button type="button">Update Profile</button>
+    </a>
+
+{% endblock %}

@@ -16,3 +16,11 @@ class RegistrationForm(forms.ModelForm):
         if password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email']  # Add fields you want users to update
+
+    email = forms.EmailField(required=False)
+

@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'accounts',
-    
+
     'oauth2_provider',
 ]
 
@@ -78,6 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'identity_provider.wsgi.application'
 
+LOGOUT_REDIRECT_URL = "/accounts/login"
 
 #Oauth2 stuff
 OIDC_RSA_PRIVATE_KEY = env.str('OIDC_RSA_PRIVATE_KEY', multiline=True)
