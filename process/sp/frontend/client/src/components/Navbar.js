@@ -2,8 +2,8 @@ import {Link, NavLink} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 const Navbar = () => {
-    const { isAuthenticated } = (useSelector(state => state.auth.token) === null);
-
+    const accessToken = useSelector(state => state.auth.token);
+    const isAuthenticated = accessToken !== null;
     const authLinks = (
         <>
             <li className='nav-item'>
@@ -12,7 +12,7 @@ const Navbar = () => {
                 </NavLink>
             </li>
             <li className='nav-item'>
-                <a className='nav-link' href='#!'>
+                <a className='nav-link' href='/logout'>
                     Logout
                 </a>
             </li>
@@ -37,7 +37,7 @@ const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-            <Link ClassName='navbar-brand' to='/'>
+            <Link className='navbar-brand' to='/'>
                 SaferSSO
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
 import environ
 
 env = environ.Env()
@@ -30,7 +31,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('ENV', 'local') == 'local'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "host.docker.internal"] # this is a dirty hack, see sp.app.accounts.views. for more info
 
 
 # Application definition
@@ -92,6 +93,33 @@ OAUTH2_PROVIDER = {
         "email": "User email address",
     },
 }
+
+AUTHENTICATION_BACKENDS = [
+    'yourapp.authentication.JWTAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',  
+]
+# Add Simple JWT to your REST framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # Add any other authentication classes as needed
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+# JWT settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'S256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
