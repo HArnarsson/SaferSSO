@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../features/auth';
 import { useNavigate } from 'react-router-dom';
-import api from '../api';
+import { api } from '../api';
 
 const AuthCallback = () => {
   const dispatch = useDispatch();

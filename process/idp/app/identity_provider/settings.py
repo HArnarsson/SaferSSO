@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from datetime import timedelta
 import environ
 
 env = environ.Env()
@@ -33,6 +32,9 @@ DEBUG = os.getenv('ENV', 'local') == 'local'
 
 ALLOWED_HOSTS = ["localhost", "host.docker.internal"] # this is a dirty hack, see sp.app.accounts.views. for more info
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
+]
 
 # Application definition
 
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'accounts',
+    'corsheaders',
 
     'oauth2_provider',
 ]
@@ -52,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -94,31 +98,6 @@ OAUTH2_PROVIDER = {
     },
 }
 
-AUTHENTICATION_BACKENDS = [
-    'yourapp.authentication.JWTAuthBackend',
-    'django.contrib.auth.backends.ModelBackend',  
-]
-# Add Simple JWT to your REST framework settings
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # Add any other authentication classes as needed
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-}
-
-# JWT settings
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'S256',
-    'SIGNING_KEY': SECRET_KEY,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

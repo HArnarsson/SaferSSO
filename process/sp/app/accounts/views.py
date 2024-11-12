@@ -6,10 +6,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 User = get_user_model()
 
 class OIDCTokenView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         code = request.data.get('code')
         if not code:
@@ -74,5 +77,12 @@ class OIDCTokenView(APIView):
             })
 
         except requests.RequestException as e:
-            print(e)
             return Response({"error": "Failed to communicate with IdP"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class RevokeTokenView(APIView):
+    # TODO finish this 
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        refresh_token = request.data.get('refresh_token')
+        pass

@@ -6,6 +6,7 @@ import DashboardPage from './containers/DashboardPage';
 import LoginPage from './containers/LoginPage';
 import RegisterPage from './containers/RegisterPage';
 import AuthCallback from './containers/AuthCallbackPage';
+import LogoutPage from './containers/LogoutPage';
 
 import {store} from './store';
 
@@ -18,6 +19,7 @@ const App = () => (
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/logout" element={<LogoutPage />} />
       </Routes>
     </Router>
   </Provider>
