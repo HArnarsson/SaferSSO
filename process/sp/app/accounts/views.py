@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
+from .utils import verify_id_token
+
 User = get_user_model()
 
 class OIDCTokenView(APIView):
@@ -49,22 +51,15 @@ class OIDCTokenView(APIView):
                 print(response_data)
                 return Response({"error": response_data}, status=status.HTTP_400_BAD_REQUEST)
 
-            id_token = response_data.get("id_token")  # Extract the id_token if needed
-            access_token = response_data.get("access_token")
+            id_token = response_data.get("id_token")
+            user_info = verify_id_token(id_token)
 
-            # Optionally verify ID token and get user info if required
-            user_info_url = "http://host.docker.internal:8001" + "/auth/userinfo"  # dirty hack, see above TODO: fix
-            user_info_response = requests.get(
-                user_info_url,
-                headers={"Authorization": f"Bearer {access_token}"}
-            )
-
-            user_info = user_info_response.json()
-            email = user_info.get("email") 
-
+            email = user_info.get("email")
+            print(user_info)
             # Get or create the user
             user, created = User.objects.get_or_create(email=email)
             if created:
+                user.sub = user_info["sub"]
                 user.username = email.split('@')[0]
                 user.save()
 
