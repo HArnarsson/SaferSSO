@@ -55,7 +55,6 @@ class OIDCTokenView(APIView):
             user_info = verify_id_token(id_token)
 
             email = user_info.get("email")
-            print(user_info)
             # Get or create the user
             user, created = User.objects.get_or_create(email=email)
             if created:
