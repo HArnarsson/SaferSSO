@@ -29,6 +29,8 @@ services:
     depends_on:
       - sp_db
       # - sp_migrate
+    networks:
+      - auth_network  # Add this network
 
 #Express server service
   sp_express:
@@ -121,6 +123,8 @@ services:
     depends_on:
       - idp_db
       # - idp_migrate
+    networks:
+      - auth_network  # Add this network
 
   idp_db:
     profiles: ["idp", "backend"]
@@ -162,3 +166,7 @@ volumes:
     driver: local
   idp_data:
     driver: local
+
+networks:
+  auth_network:
+    name: auth_network
