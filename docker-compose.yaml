@@ -28,7 +28,7 @@ services:
       DJANGO_SECRET_KEY: ${SP_DJANGO_SECRET_KEY}
     depends_on:
       - sp_db
-      # - sp_migrate
+      - sp_migrate
 
 #Express server service
   sp_express:
@@ -84,22 +84,23 @@ services:
       POSTGRES_HOST: ${SP_POSTGRES_HOST}
       POSTGRES_PORT: ${SP_POSTGRES_PORT}
 
-  # sp_migrate:
-  #   profiles: ["sp", "backend"]
-  #   build:
-  #     context: process/sp
-  #     dockerfile: Dockerfile
-  #   container_name: sp_migrate
-  #   restart: no
-  #   command: bash -c "python manage.py makemigrations && python manage.py migrate"
-  #   environment: 
-  #     <<: *common-variables
-  #     POSTGRES_HOST: ${SP_POSTGRES_HOST}
-  #     POSTGRES_PORT: ${SP_POSTGRES_PORT}
-  #   volumes:
-  #     - ./process/sp/app:/code
-  #   depends_on:
-  #     - sp_db
+  sp_migrate:
+    profiles: ["sp", "backend"]
+    build:
+      context: process/sp
+      dockerfile: Dockerfile
+    container_name: sp_migrate
+    restart: no
+    command: bash -c "python manage.py makemigrations && python manage.py migrate"
+    environment: 
+      <<: *common-variables
+      POSTGRES_HOST: ${SP_POSTGRES_HOST}
+      POSTGRES_PORT: ${SP_POSTGRES_PORT}
+      DJANGO_SECRET_KEY: ${SP_DJANGO_SECRET_KEY}
+    volumes:
+      - ./process/sp/app:/code
+    depends_on:
+      - sp_db
 
   identity_provider:
     profiles: ["idp", "backend"]
@@ -120,7 +121,7 @@ services:
       OIDC_RSA_PRIVATE_KEY: ${OIDC_RSA_PRIVATE_KEY}
     depends_on:
       - idp_db
-      # - idp_migrate
+      - idp_migrate
 
   idp_db:
     profiles: ["idp", "backend"]
@@ -138,23 +139,23 @@ services:
       - "5433:5433"
     command: -p 5433
 
-  # idp_migrate:
-  #   profiles: ["idp", "backend"]
-  #   build:
-  #     context: process/idp
-  #     dockerfile: Dockerfile
-  #   container_name: idp_migrate
-  #   restart: no
-  #   command: bash -c "python manage.py makemigrations && python manage.py migrate"
-  #   environment: 
-  #     <<: *common-variables
-  #     POSTGRES_HOST: ${IDP_POSTGRES_HOST}
-  #     POSTGRES_PORT: ${IDP_POSTGRES_PORT}
-  #     OIDC_RSA_PRIVATE_KEY: ${OIDC_RSA_PRIVATE_KEY}
-  #   volumes:
-  #     - ./process/idp/app:/code
-  #   depends_on:
-  #     - idp_db
+  idp_migrate:
+    profiles: ["idp", "backend"]
+    build:
+      context: process/idp
+      dockerfile: Dockerfile
+    container_name: idp_migrate
+    restart: no
+    command: bash -c "python manage.py makemigrations && python manage.py migrate"
+    environment: 
+      <<: *common-variables
+      POSTGRES_HOST: ${IDP_POSTGRES_HOST}
+      POSTGRES_PORT: ${IDP_POSTGRES_PORT}
+      OIDC_RSA_PRIVATE_KEY: ${OIDC_RSA_PRIVATE_KEY}
+    volumes:
+      - ./process/idp/app:/code
+    depends_on:
+      - idp_db
 
 
 volumes:
