@@ -85,6 +85,14 @@ services:
       <<: *common-variables
       POSTGRES_HOST: ${SP_POSTGRES_HOST}
       POSTGRES_PORT: ${SP_POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - auth_network
+    
 
   sp_migrate:
     profiles: ["sp", "backend"]
@@ -102,7 +110,10 @@ services:
     volumes:
       - ./process/sp/app:/code
     depends_on:
-      - sp_db
+      sp_db:
+        condition: service_healthy
+    networks:
+      - auth_network 
 
   identity_provider:
     profiles: ["idp", "backend"]
@@ -162,6 +173,8 @@ services:
       - ./process/idp/app:/code
     depends_on:
       - idp_db
+    networks:
+      - auth_network 
 
 
 volumes:
