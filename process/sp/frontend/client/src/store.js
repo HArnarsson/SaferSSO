@@ -5,9 +5,8 @@ import authReducer from './features/auth';
 
 // Configure persist
 const persistConfig = {
-    key: 'root', // The key for the storage
+    key: 'auth', // The key for the storage
     storage,     // The storage engine (localStorage in this case)
-    whitelist: ['auth'], // Only persist the auth slice
 };
 
 // Create a persisted reducer
