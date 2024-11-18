@@ -4,7 +4,6 @@ import {Provider} from 'react-redux';
 import HomePage from './containers/HomePage';
 import DashboardPage from './containers/DashboardPage';
 import LoginPage from './containers/LoginPage';
-import RegisterPage from './containers/RegisterPage';
 import AuthCallback from './containers/AuthCallbackPage';
 import LogoutPage from './containers/LogoutPage';
 
@@ -17,7 +16,6 @@ const App = () => (
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/logout" element={<LogoutPage />} />
       </Routes>
