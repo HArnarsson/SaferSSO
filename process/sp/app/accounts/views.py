@@ -23,7 +23,7 @@ class OIDCTokenView(APIView):
         if not code_verifier:
             return Response({"error": "Code verifier not provided"}, status=status.HTTP_400_BAD_REQUEST)
         # Exchange code for token with IdP
-        token_url = "http://host.docker.internal:8001" + "/auth/token/"  # os.getenv('IDP_TOKEN_URL')#this is a bit of a hack TODO: fix docker compose and add networks to get around this (and then we can customize urls)
+        token_url = os.getenv('IDP_TOKEN_URL') #"http://host.docker.internal:8001" + "/auth/token/"  # os.getenv('IDP_TOKEN_URL')#this is a bit of a hack TODO: fix docker compose and add networks to get around this (and then we can customize urls)
         client_id = os.getenv('SP_CLIENT_ID')
         client_secret = os.getenv('SP_CLIENT_SECRET')
         redirect_uri = os.getenv('REDIRECT_URI')  # Ensure this matches the IdP redirect URI

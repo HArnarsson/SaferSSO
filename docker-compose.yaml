@@ -29,8 +29,8 @@ services:
     depends_on:
       - sp_db
       # - sp_migrate
-    # networks:
-    #   - auth_network  
+    networks:
+      - auth_network  
 
 #Express server service
   sp_express:
@@ -85,6 +85,8 @@ services:
       <<: *common-variables
       POSTGRES_HOST: ${SP_POSTGRES_HOST}
       POSTGRES_PORT: ${SP_POSTGRES_PORT}
+    networks:
+      - auth_network
 
   # sp_migrate:
   #   profiles: ["sp", "backend"]
@@ -123,8 +125,8 @@ services:
     depends_on:
       - idp_db
       # - idp_migrate
-    # networks:
-    #   - auth_network  
+    networks:
+      - auth_network  
 
   idp_db:
     profiles: ["idp", "backend"]
@@ -141,6 +143,8 @@ services:
     ports:
       - "5433:5433"
     command: -p 5433
+    networks:
+      - auth_network
 
   # idp_migrate:
   #   profiles: ["idp", "backend"]
@@ -167,6 +171,6 @@ volumes:
   idp_data:
     driver: local
 
-# networks:
-#   auth_network:
-#     name: auth_network
+networks:
+  auth_network:
+    name: auth_network
