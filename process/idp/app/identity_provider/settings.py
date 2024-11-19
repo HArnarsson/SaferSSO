@@ -30,7 +30,9 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('ENV', 'local') == 'local'
 
-ALLOWED_HOSTS = ["localhost", "host.docker.internal"] # this is a dirty hack, see sp.app.accounts.views. for more info
+ALLOWED_HOSTS = ["localhost", "identityprovider"] 
+
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"

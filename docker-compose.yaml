@@ -7,6 +7,8 @@ x-common-variables: &common-variables
   IDP_URL: ${IDP_URL}
   SP_CLIENT_ID: ${SP_CLIENT_ID}
   SP_CLIENT_SECRET: ${SP_CLIENT_SECRET}
+  IDP_TOKEN_URL: ${IDP_TOKEN_URL}
+  IDP_JWKS_URL: ${IDP_JWKS_URL}
 
 
 services:
@@ -29,6 +31,8 @@ services:
     depends_on:
       - sp_db
       - sp_migrate
+    networks:
+      - auth_network  
 
 #Express server service
   sp_express:
@@ -83,6 +87,14 @@ services:
       <<: *common-variables
       POSTGRES_HOST: ${SP_POSTGRES_HOST}
       POSTGRES_PORT: ${SP_POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - auth_network
+    
 
   sp_migrate:
     profiles: ["sp", "backend"]
@@ -100,7 +112,10 @@ services:
     volumes:
       - ./process/sp/app:/code
     depends_on:
-      - sp_db
+      sp_db:
+        condition: service_healthy
+    networks:
+      - auth_network 
 
   identity_provider:
     profiles: ["idp", "backend"]
@@ -108,6 +123,7 @@ services:
       context: process/idp
       dockerfile: Dockerfile
     container_name: "identity_provider"
+    hostname: "identityprovider"
     command: python manage.py runserver 0.0.0.0:8001
     ports:
       - "8001:8001"
@@ -122,6 +138,8 @@ services:
     depends_on:
       - idp_db
       - idp_migrate
+    networks:
+      - auth_network  
 
   idp_db:
     profiles: ["idp", "backend"]
@@ -138,6 +156,8 @@ services:
     ports:
       - "5433:5433"
     command: -p 5433
+    networks:
+      - auth_network
 
   idp_migrate:
     profiles: ["idp", "backend"]
@@ -156,6 +176,8 @@ services:
       - ./process/idp/app:/code
     depends_on:
       - idp_db
+    networks:
+      - auth_network 
 
 
 volumes:
@@ -163,3 +185,8 @@ volumes:
     driver: local
   idp_data:
     driver: local
+
+networks:
+  auth_network:
+    name: auth_network
+    driver: bridge
