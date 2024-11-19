@@ -41,7 +41,7 @@ class OIDCTokenView(APIView):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "application/json",
-            "Host": "identityProvider",  # Add this line
+            "Host": "identityprovider",  # Add this line
         }
         # Make the request to the IdP
         try:

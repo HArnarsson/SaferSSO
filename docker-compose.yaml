@@ -8,6 +8,7 @@ x-common-variables: &common-variables
   SP_CLIENT_ID: ${SP_CLIENT_ID}
   SP_CLIENT_SECRET: ${SP_CLIENT_SECRET}
   IDP_TOKEN_URL: ${IDP_TOKEN_URL}
+  IDP_JWKS_URL: ${IDP_JWKS_URL}
 
 
 services:
