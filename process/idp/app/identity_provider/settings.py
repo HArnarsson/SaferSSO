@@ -32,9 +32,7 @@ DEBUG = os.getenv('ENV', 'local') == 'local'
 
 ALLOWED_HOSTS = ["localhost", "identityProvider"] 
 
-USE_X_FORWARDED_HOST = True
-USE_X_FORWARDED_PORT = True
-APPEND_SLASH = True  # If you're having trailing slash issues
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
@@ -57,9 +55,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.security.SecurityMiddleware', When these are commented out one oauth request results in a bad request, but we still get in so...
+    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
