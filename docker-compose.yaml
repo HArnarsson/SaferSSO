@@ -116,12 +116,13 @@ services:
     networks:
       - auth_network 
 
-  identityprovider:
+  identity_provider:
     profiles: ["idp", "backend"]
     build: 
       context: process/idp
       dockerfile: Dockerfile
-    container_name: "identityProvider"
+    container_name: "identity_provider"
+    hostname: "identityprovider"
     command: python manage.py runserver 0.0.0.0:8001
     ports:
       - "8001:8001"

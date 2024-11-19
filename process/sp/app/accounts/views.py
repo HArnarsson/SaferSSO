@@ -72,6 +72,7 @@ class OIDCTokenView(APIView):
             })
 
         except requests.RequestException as e:
+            print(e)
             return Response({"error": "Failed to communicate with IdP"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class RevokeTokenView(APIView):
