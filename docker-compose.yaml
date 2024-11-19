@@ -7,6 +7,7 @@ x-common-variables: &common-variables
   IDP_URL: ${IDP_URL}
   SP_CLIENT_ID: ${SP_CLIENT_ID}
   SP_CLIENT_SECRET: ${SP_CLIENT_SECRET}
+  IDP_TOKEN_URL: ${IDP_TOKEN_URL}
 
 
 services:
@@ -115,12 +116,12 @@ services:
     networks:
       - auth_network 
 
-  identity_provider:
+  identityprovider:
     profiles: ["idp", "backend"]
     build: 
       context: process/idp
       dockerfile: Dockerfile
-    container_name: "identity_provider"
+    container_name: "identityProvider"
     command: python manage.py runserver 0.0.0.0:8001
     ports:
       - "8001:8001"
@@ -186,3 +187,4 @@ volumes:
 networks:
   auth_network:
     name: auth_network
+    driver: bridge

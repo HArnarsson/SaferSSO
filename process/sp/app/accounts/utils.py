@@ -5,7 +5,7 @@ from jwcrypto import jwk
 
 
 def get_jwk():
-    jwks_url = "http://host.docker.internal:8001" + "/auth/.well-known/jwks.json"# TODO fix this hack, see views.p
+    jwks_url = "http://identityProvider:8001/auth/.well-known/jwks.json" #"http://host.docker.internal:8001" + "/auth/.well-known/jwks.json"# TODO fix this hack, see views.p
     response = requests.get(jwks_url)
     return response.json()
 
