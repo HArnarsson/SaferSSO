@@ -69,6 +69,10 @@ class OIDCTokenView(APIView):
             return Response({
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
+                "user": {
+                    "email": user.email,
+                    "username": user.username,
+                },
             })
 
         except requests.RequestException as e:
@@ -82,3 +86,23 @@ class RevokeTokenView(APIView):
     def post(self, request):
         refresh_token = request.data.get('refresh_token')
         pass
+
+#if need to fetch user details later
+class UserInfoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        user = request.user
+        return Response({
+            "email": user.email,
+            "username": user.username,
+        })
+
+def user_info(request, user_id):
+    # Retrieve user information based on user_id
+    user_data = {
+        'name': 'John Doe',
+        'email': 'johndoe@example.com',
+        # ... other user information
+    }
+    return Response(user_data)
