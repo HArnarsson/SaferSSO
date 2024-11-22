@@ -28,8 +28,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "")
 DEBUG = os.getenv('ENV', 'local') == 'local'
 
 CORS_ORIGIN_ALLOW_ALL = DEBUG
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',  # Replace with your frontend's origin
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Adjust as necessary
 ]
 
 ALLOWED_HOSTS = []

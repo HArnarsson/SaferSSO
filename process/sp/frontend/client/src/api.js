@@ -9,7 +9,7 @@ const idp = axios.create({
 })
 
 const fetchUserInfo = async (token) => {
-  const response = await api.get('http://localhost:8002/user/info/', {
+  const response = await api.get('/user/info/', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -10,6 +10,9 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=False)
     email = models.EmailField(max_length=254, unique=False)
 
+    # Add 'favorite_color' field
+    favorite_color = models.CharField(max_length=50, blank=True, null=True)
+
     # Add the 'sub' field
     sub = models.CharField(max_length=255, blank=True, null=True)
 

@@ -7,6 +7,7 @@ import DashboardPage from './containers/DashboardPage';
 import LoginPage from './containers/LoginPage';
 import AuthCallback from './containers/AuthCallbackPage';
 import LogoutPage from './containers/LogoutPage';
+import UpdatePage from './containers/UpdatePage';
 
 import { store, persistor } from './store';
 import { fetchUser } from './features/auth';
@@ -31,6 +32,7 @@ const AppContent = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/update-info" element={<UpdatePage />} />
       </Routes>
     </Router>
   );

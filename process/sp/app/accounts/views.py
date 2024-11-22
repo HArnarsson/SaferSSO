@@ -91,18 +91,12 @@ class RevokeTokenView(APIView):
 class UserInfoView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self,request):
+    def get(self, request):
         user = request.user
         return Response({
             "email": user.email,
             "username": user.username,
+            "uid": str(user.uid),
+            "favorite_color": user.favorite_color,
+            "sub": user.sub,
         })
-
-def user_info(request, user_id):
-    # Retrieve user information based on user_id
-    user_data = {
-        'name': 'John Doe',
-        'email': 'johndoe@example.com',
-        # ... other user information
-    }
-    return Response(user_data)

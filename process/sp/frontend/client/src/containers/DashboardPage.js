@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 const DashboardPage = () => {
   const user = useSelector((state) => state.auth.user);
 
-  console.log("User state:", user); // Debugging: Check if `user` is null, undefined, or an object.
-
   if (!user) {
     return <div>Loading user info...</div>;
   }
