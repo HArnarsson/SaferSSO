@@ -16,6 +16,9 @@ class User(AbstractUser):
     # Specify the unique identifier for authentication
     USERNAME_FIELD = 'uid'
 
+    favorite_color = models.CharField(max_length=255, unique=False, blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    profession = models.CharField(max_length=255, unique=False, blank=True, null=True)
 
     def __str__(self):
         return self.username

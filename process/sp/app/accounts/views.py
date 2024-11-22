@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from accounts.serializers import UserSerializer
 
 from .utils import verify_id_token
 
@@ -72,7 +73,6 @@ class OIDCTokenView(APIView):
             })
 
         except requests.RequestException as e:
-            print(e)
             return Response({"error": "Failed to communicate with IdP"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class RevokeTokenView(APIView):
@@ -82,3 +82,22 @@ class RevokeTokenView(APIView):
     def post(self, request):
         refresh_token = request.data.get('refresh_token')
         pass
+
+class DashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+class UpdateDashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def patch(self, request):
+        user = request.user
+        serializer = UserSerializer(user, data=request.data, partial=True)  # Allow partial updates
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
