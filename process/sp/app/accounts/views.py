@@ -1,6 +1,6 @@
 import requests
 import os
-from django.conf import settings
+from django.db import transaction
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework import status
@@ -42,7 +42,7 @@ class OIDCTokenView(APIView):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "application/json",
-            "Host": "identityprovider",  # Add this line
+            "Host": "identityprovider",
         }
         # Make the request to the IdP
         try:
@@ -58,7 +58,16 @@ class OIDCTokenView(APIView):
 
             email = user_info.get("email")
             # Get or create the user
-            user, created = User.objects.get_or_create(email=email)
+            queryset = User.objects.filter(email=email)
+
+            if queryset.exists():
+                user = queryset.first()
+                created = False
+            else:
+                with transaction.atomic():
+                    user = User.objects.create(email=email)
+                    created = True
+
             if created:
                 user.sub = user_info["sub"]
                 user.username = email.split('@')[0]
@@ -93,7 +102,7 @@ class DashboardView(APIView):
 
 class UpdateDashboardView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request):
         user = request.user
         serializer = UserSerializer(user, data=request.data, partial=True)  # Allow partial updates
